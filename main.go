@@ -119,7 +119,6 @@ func main() {
 		}
 		ext := strings.ToLower(filepath.Ext(path))
 		if imgExts[ext] || vidExts[ext] {
-			files = append(files) // Placeholder for concurrent fix
 			files = append(files, path)
 		}
 		return nil
