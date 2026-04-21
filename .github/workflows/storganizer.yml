@@ -1,0 +1,38 @@
+name: Update Media Report
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'Storganizer/**'
+      - '**.jpg'
+      - '**.png'
+      - '**.mp4'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Go
+      uses: actions/setup-go@v5
+      with:
+        go-version: '1.23'
+
+    - name: Build Storganizer CLI
+      working-directory: ./Storganizer
+      run: go build -o storganizer main.go
+
+    - name: Run Scan and Generate Report
+      working-directory: ./Storganizer
+      run: ./storganizer -path .. -html
+
+    - name: Deploy to GitHub Pages
+      uses: JamesIves/github-pages-deploy-action@v4
+      with:
+        folder: Storganizer
+        target-folder: dashboard
+        branch: gh-pages
