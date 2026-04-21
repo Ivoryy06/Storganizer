@@ -69,12 +69,35 @@ Windows:
 .\storganizer.exe -path D:\Photos -html
 ```
 
-## `storganizer` Flags
+## Linux/macOS
 
-- `-path`       - Directory to scan (default: `.`)
-- `-threshold`  - Perceptual distance limit (default: `10`, lower is stricter)
-- `-json`       - Output results as JSON
-- `-html`       - Bake results into `index.html` report
+```bash
+# Basic scan of the current directory
+./storganizer
+
+# Scan a specific media folder
+./storganizer -path ~/Pictures
+
+# Generate a web-based audit report
+./storganizer -path ~/Pictures -html
+
+# Output raw JSON for pipeline integration
+./storganizer -path ~/Pictures -json
+```
+
+## Windows
+
+```powershell
+# Scan a disk path
+.\storganizer.exe -path D:\Photos -html
+```
+
+## Features
+
+- `-path` - Directory to scan (default: `.`)
+- `-threshold` - Perceptual distance limit (default: `10`, lower is stricter)
+- `-json` - Output results as JSON
+- `-html` - Bake results into `index.html` report
 
 ## Typical workflows
 
