@@ -49,7 +49,12 @@ Storganizer runs as a single native binary with no external dependencies:
 
 ## Running
 
+### Linux/macOS
+
 ```bash
+# Build from source
+go build -o storganizer .
+
 # Basic scan of the current directory
 ./storganizer
 
@@ -63,33 +68,20 @@ Storganizer runs as a single native binary with no external dependencies:
 ./storganizer -path ~/Pictures -json
 ```
 
-Windows:
-```powershell
-# Scan a disk path
-.\storganizer.exe -path D:\Photos -html
-```
-
-## Linux/macOS
-
-```bash
-# Basic scan of the current directory
-./storganizer
-
-# Scan a specific media folder
-./storganizer -path ~/Pictures
-
-# Generate a web-based audit report
-./storganizer -path ~/Pictures -html
-
-# Output raw JSON for pipeline integration
-./storganizer -path ~/Pictures -json
-```
-
-## Windows
+### Windows
 
 ```powershell
+# Build from source
+go build -o storganizer.exe .
+
 # Scan a disk path
 .\storganizer.exe -path D:\Photos -html
+
+# Generate HTML report
+.\storganizer.exe -path D:\Photos -html
+
+# Output JSON
+.\storganizer.exe -path D:\Photos -json results.json
 ```
 
 ## Features
