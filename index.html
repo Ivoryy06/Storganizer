@@ -8,89 +8,117 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg: #eef6f8;
-      --surface: rgba(245, 252, 255, 0.92);
-      --surface-strong: #f9fdff;
-      --border: #b9d6df;
-      --text: #18313b;
-      --muted: #58717b;
-      --accent: #0f8c94;
-      --accent-soft: #d1f0ee;
-      --ok: #247a54;
-      --warn: #b07f13;
-      --fail: #b0445d;
-      --code: #dfedf1;
-      --shadow: 0 20px 50px rgba(20, 74, 89, 0.12);
+      --bg:      #f0f7ff;
+      --surface: #e6f0ff;
+      --border:  #b3d1ff;
+      --accent:  #0066ff;
+      --muted:   #668cff;
+      --text:    #001a4d;
+      --ok:      #28a745;
+      --fail:    #dc3545;
+      --warn:    #ffc107;
+      --code-bg: #f0f5ff;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg:      #0a0f1a;
+        --surface: #12192a;
+        --border:  #203050;
+        --accent:  #58a6ff;
+        --muted:   #7088a0;
+        --text:    #d0e0f0;
+        --ok:      #5aaf78;
+        --fail:    #d06060;
+        --warn:    #c09040;
+        --code-bg: #1f2a3a;
+      }
     }
 
     body {
       min-height: 100vh;
       color: var(--text);
-      background:
-        radial-gradient(circle at top left, rgba(15, 140, 148, 0.16), transparent 32%),
-        radial-gradient(circle at bottom right, rgba(31, 112, 166, 0.14), transparent 30%),
-        linear-gradient(180deg, #f5fbfd 0%, #e6f1f5 100%);
-      font-family: "Trebuchet MS", "Avenir Next", "Segoe UI", sans-serif;
+      background: var(--bg);
+      font-family: system-ui, -apple-system, sans-serif;
+      padding: 2rem 1rem;
+      line-height: 1.5;
     }
 
     header, main {
-      max-width: 960px;
+      max-width: 850px;
       margin: 0 auto;
-      padding: 0 1.25rem;
     }
 
     header {
-      padding-top: 2rem;
-      padding-bottom: 1rem;
+      margin-bottom: 2rem;
       display: flex;
+      justify-content: space-between;
       align-items: flex-end;
-      gap: 1rem;
-      flex-wrap: wrap;
     }
 
     h1 {
-      font-size: clamp(2rem, 5vw, 3.6rem);
-      line-height: 0.95;
+      font-size: 1.8rem;
+      font-weight: 800;
       color: var(--accent);
-      letter-spacing: -0.04em;
+      letter-spacing: -0.02em;
     }
 
     .sub {
-      font-size: 0.8rem;
+      font-size: 0.72rem;
       text-transform: uppercase;
-      letter-spacing: 0.2em;
+      letter-spacing: 2px;
       color: var(--muted);
-      padding-bottom: 0.45rem;
+      margin-top: 0.2rem;
     }
 
     #gen-time {
-      margin-left: auto;
-      font-size: 0.8rem;
+      font-size: 0.7rem;
       color: var(--muted);
-      padding-bottom: 0.45rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
 
     main {
       display: grid;
       gap: 1.5rem;
-      padding-bottom: 3rem;
     }
 
     section {
       background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 22px;
-      padding: 1.25rem 1.35rem;
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(6px);
+      border: 0.5px solid var(--border);
+      border-radius: 14px;
+      padding: 1.2rem 1.4rem;
     }
 
     h2 {
-      font-size: 0.76rem;
-      letter-spacing: 0.2em;
+      font-size: 0.72rem;
+      letter-spacing: 2px;
       text-transform: uppercase;
       color: var(--muted);
-      margin-bottom: 1rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 1.2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-item .val {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--accent);
+      line-height: 1.2;
+    }
+
+    .stat-item .lbl {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--muted);
+      margin-top: 4px;
+      font-weight: 600;
     }
 
     .matches {
@@ -99,57 +127,79 @@
     }
 
     .match-card {
-      background: var(--surface-strong);
-      border: 1px solid var(--border);
-      border-radius: 18px;
+      border: 0.5px solid var(--border);
+      border-radius: 10px;
       padding: 1rem;
+      background: var(--bg);
     }
 
     .match-header {
       display: flex;
       justify-content: space-between;
-      margin-bottom: 0.8rem;
-      font-size: 0.85rem;
+      margin-bottom: 1rem;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
       color: var(--muted);
-      font-weight: bold;
+      font-weight: 700;
     }
 
     .match-files {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
       gap: 1rem;
     }
 
     .file-item {
-      padding: 1rem;
-      background: var(--code);
-      border-radius: 12px;
-      font-size: 0.85rem;
+      padding: 0.8rem;
+      background: var(--code-bg);
+      border: 0.5px solid var(--border);
+      border-radius: 8px;
     }
 
     .file-path {
       word-break: break-all;
-      font-family: monospace;
+      font-family: ui-monospace, monospace;
+      font-size: 0.8rem;
       color: var(--accent);
-      margin-bottom: 0.4rem;
+      margin-bottom: 0.5rem;
     }
 
-    .loading {
-      text-align: center;
-      padding: 2rem;
+    .file-meta {
+      font-size: 0.75rem;
       color: var(--muted);
     }
 
     .pill {
       border-radius: 999px;
-      padding: 0.25rem 0.65rem;
-      font-size: 0.75rem;
+      padding: 0.2rem 0.6rem;
+      font-size: 0.65rem;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
+      letter-spacing: 1px;
+      display: inline-block;
     }
 
-    .ok { color: var(--ok); background: rgba(46, 139, 87, 0.12); }
+    .ok { color: var(--ok); border: 0.5px solid var(--ok); background: transparent; }
+
+    .guide { display: flex; flex-direction: column; gap: 1rem; }
+    .guide-step { display: flex; gap: 12px; }
+    .guide-step .num { width: 24px; height: 24px; border-radius: 50%; background: var(--border); color: var(--accent); font-size: 0.75rem; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+    .guide-step .body { flex: 1; }
+    .guide-step .body p { font-size: 0.85rem; margin-bottom: 6px; font-weight: 600; }
+    
+    pre { 
+      background: var(--code-bg); 
+      border-radius: 8px; 
+      padding: 0.8rem; 
+      font-size: 0.78rem; 
+      overflow-x: auto; 
+      color: var(--text); 
+      font-family: ui-monospace, monospace;
+      border: 0.5px solid var(--border);
+    }
+
+    .split { display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
   </style>
 </head>
 <body>
@@ -162,9 +212,26 @@
   </header>
 
   <main>
-    <section id="status-section">
-      <h2>Scan Status</h2>
-      <div id="status-content" style="font-size: 0.94rem;">Loading report...</div>
+    <section>
+      <h2>📊 Analysis Insights</h2>
+      <div class="stats-grid">
+        <div class="stat-item">
+          <div class="val" id="stat-matches">0</div>
+          <div class="lbl">Total Duplicates</div>
+        </div>
+        <div class="stat-item">
+          <div class="val" id="stat-dist">0%</div>
+          <div class="lbl">Visual Similarity</div>
+        </div>
+        <div class="stat-item">
+          <div class="val">Native</div>
+          <div class="lbl">Engine Type</div>
+        </div>
+        <div class="stat-item">
+          <div class="val" id="stat-status"><span class="pill ok">Static</span></div>
+          <div class="lbl">Report Mode</div>
+        </div>
+      </div>
     </section>
 
     <section id="results-section" style="display: none;">
@@ -172,11 +239,66 @@
       <div id="results-container" class="matches"></div>
     </section>
 
+    <div class="split">
+      <section>
+        <h2>🐧 Linux Tutorial</h2>
+        <div class="guide">
+          <div class="guide-step">
+            <div class="num">1</div>
+            <div class="body">
+              <p>Build from source</p>
+              <pre>go build -o storganizer main.go</pre>
+            </div>
+          </div>
+          <div class="guide-step">
+            <div class="num">2</div>
+            <div class="body">
+              <p>Run scan with HTML output</p>
+              <pre>./storganizer -path ./media -html</pre>
+            </div>
+          </div>
+          <div class="guide-step">
+            <div class="num">3</div>
+            <div class="body">
+              <p>Open report in browser</p>
+              <pre>xdg-open index.html</pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>🪟 Windows Tutorial</h2>
+        <div class="guide">
+          <div class="guide-step">
+            <div class="num">1</div>
+            <div class="body">
+              <p>Compile executable</p>
+              <pre>go build -o storganizer.exe main.go</pre>
+            </div>
+          </div>
+          <div class="guide-step">
+            <div class="num">2</div>
+            <div class="body">
+              <p>Run against a folder</p>
+              <pre>.\storganizer.exe -path D:\Photos -html</pre>
+            </div>
+          </div>
+          <div class="guide-step">
+            <div class="num">3</div>
+            <div class="body">
+              <p>Launch the dashboard</p>
+              <pre>start index.html</pre>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
     <section>
       <h2>About Storganizer</h2>
-      <p style="line-height: 1.6; font-size: 0.94rem; color: var(--muted);">
-        This report was generated by <strong>Storganizer</strong>, a perceptual media scanner. 
-        It identifies duplicates, resized copies, and near-identical shots by analyzing visual content rather than just file hashes.
+      <p style="color: var(--muted); font-size: 0.85rem;">
+        Generated by <strong>Storganizer</strong>. This tool identifies true duplicates and visually similar media using perceptual pHash and dHash analysis.
       </p>
     </section>
   </main>
@@ -184,43 +306,40 @@
   <script>
     // DATA_INJECTION_MARKER
     
-    document.getElementById("gen-time").textContent = "last updated " + new Date().toLocaleString();
+    document.getElementById("gen-time").textContent = "updated " + new Date().toLocaleDateString();
 
     const resultsContainer = document.getElementById('results-container');
     const resultsSection = document.getElementById('results-section');
-    const statusContent = document.getElementById('status-content');
 
     function init() {
-      // Check if data was baked in by GitHub Actions
-      if (typeof EMBEDDED_DATA !== 'undefined') {
+      if (typeof EMBEDDED_DATA !== 'undefined' && EMBEDDED_DATA !== null) {
         renderResults(EMBEDDED_DATA);
-        statusContent.innerHTML = `<span class="pill ok">Static Report</span> Baked with ${EMBEDDED_DATA.length} matches.`;
+        updateStats(EMBEDDED_DATA);
       } else {
-        // Fallback for local development
-        statusContent.innerHTML = `No baked data found. This file is intended to be populated by the GitHub build script.`;
+        document.getElementById('stat-status').innerHTML = '<span class="pill" style="color:var(--fail);border-color:var(--fail)">Empty</span>';
       }
     }
 
     function renderResults(matches) {
       if (matches.length === 0) {
-        resultsContainer.innerHTML = '<p>No duplicates found in this scan.</p>';
+        resultsContainer.innerHTML = '<p style="font-size:0.9rem; color:var(--muted)">No duplicates found in this scan.</p>';
       } else {
         matches.forEach(match => {
           const card = document.createElement('div');
           card.className = 'match-card';
           card.innerHTML = `
             <div class="match-header">
-              <span>[${match.kind.toUpperCase()}] ${match.type}</span>
-              <span>Distance Score: ${match.distance}</span>
+              <span>${match.kind} · ${match.type}</span>
+              <span>Similarity: ${calculateSimilarity(match.distance)}%</span>
             </div>
             <div class="match-files">
               <div class="file-item">
                 <div class="file-path">${match.left}</div>
-                <div>Size: ${formatBytes(match.left_size)}</div>
+                <div class="file-meta">SIZE: ${formatBytes(match.left_size)}</div>
               </div>
               <div class="file-item">
                 <div class="file-path">${match.right}</div>
-                <div>Size: ${formatBytes(match.right_size)}</div>
+                <div class="file-meta">SIZE: ${formatBytes(match.right_size)}</div>
               </div>
             </div>
           `;
@@ -228,6 +347,20 @@
         });
       }
       resultsSection.style.display = 'block';
+    }
+
+    function calculateSimilarity(distance) {
+        // Assuming max distance for "near-identical" is around 25
+        const score = Math.max(0, 100 - (distance * 4));
+        return Math.round(score);
+    }
+
+    function updateStats(matches) {
+      document.getElementById('stat-matches').textContent = matches.length;
+      if (matches.length > 0) {
+        const avgDist = matches.reduce((acc, m) => acc + m.distance, 0) / matches.length;
+        document.getElementById('stat-dist').textContent = calculateSimilarity(avgDist) + '%';
+      }
     }
 
     function formatBytes(bytes) {
