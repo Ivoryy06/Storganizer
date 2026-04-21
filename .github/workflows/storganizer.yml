@@ -4,7 +4,8 @@ on:
   push:
     branches: [ main ]
     paths:
-      - 'Storganizer/**'
+      - 'main.go'
+      - 'index.html'
       - '**.jpg'
       - '**.png'
       - '**.mp4'
@@ -23,16 +24,14 @@ jobs:
         go-version: '1.23'
 
     - name: Build Storganizer CLI
-      working-directory: ./Storganizer
       run: go build -o storganizer main.go
 
     - name: Run Scan and Generate Report
-      working-directory: ./Storganizer
-      run: ./storganizer -path .. -html
+      run: ./storganizer -path . -html
 
     - name: Deploy to GitHub Pages
       uses: JamesIves/github-pages-deploy-action@v4
       with:
-        folder: Storganizer
+        folder: .
         target-folder: dashboard
         branch: gh-pages
