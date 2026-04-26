@@ -2,7 +2,7 @@
 
 > *Fast, native duplicate finder for media-aware cleanup.*
 
-`Storganizer` is a high-performance toolkit for identifying duplicate and near-duplicate media without relying solely on exact file hashes. It catches true duplicates, downsized copies, re-exports, and near-identical shots using perceptual fingerprints.
+Storganizer is a high-performance toolkit for identifying duplicate and near-duplicate media without relying solely on exact file hashes. It catches true duplicates, downsized copies, re-exports, and near-identical shots using perceptual fingerprints.
 
 ## What it does
 
@@ -12,96 +12,103 @@
 - **Re-export detection** - catches visually identical files with different sizes or encoding
 - **Near-identical shots** - groups similar photos from the same burst or scene
 - **Interactive reporting** - generates self-contained HTML dashboards for browser-based audits
-
-## Project structure
-
-```text
-.
-├── .github/      # GitHub Automation (CI/CD report pipelines)
-├── main.go       # Native Go scanning engine and CLI logic
-├── index.html    # Unified static dashboard template
-├── Makefile      # Cross-platform build orchestration
-├── go.mod        # Go module definition
-└── README.md
-```
-
-## Stack
-
-| Layer | Tooling |
-|---|---|
-| Core engine | Go (Golang) |
-| Hashing | `goimagehash` (pHash, dHash) |
-| Web UI | HTML5, CSS3, Vanilla JS |
-| CI/CD | GitHub Actions |
-| Video | `ffmpeg` + `ffprobe` (optional) |
+- **Video support** - optional ffmpeg integration
 
 ## Requirements
 
-### Build
-- **Go 1.20+** is required to build from source.
+### Linux/macOS
 
-### Runtime
-Storganizer runs as a single native binary with no external dependencies:
-- **Linux** (amd64)
-- **Windows** (amd64)
+**Build:**
+- Go 1.20+ (`go version`)
 
-*Note: `ffmpeg` is recommended for advanced video fingerprinting support.*
+**Runtime:**
+- None - completely self-contained
+- Optional: `ffmpeg` / `ffprobe` (for video fingerprinting)
+
+### Windows
+
+**Build:**
+- Go 1.20+ (download from [go.dev](https://go.dev/dl/))
+
+**Runtime:**
+- None - completely self-contained
+- Optional: ffmpeg (for video)
+
+## Installation
+
+### Linux/macOS
+
+```bash
+# Clone the repository
+git clone https://github.com/Ivoryy06/storganizer.git ~/storganizer
+
+# Build the binary
+cd ~/storganizer
+go build -o storganizer .
+
+# Install globally (optional)
+sudo cp storganizer /usr/local/bin/
+```
+
+### Windows
+
+1. **Download Go** from [go.dev/dl](https://go.dev/dl/) and install
+
+2. **Open Command Prompt** (Win+X → Terminal)
+
+3. **Clone and build:**
+```cmd
+git clone https://github.com/Ivoryy06/storganizer.git
+cd storganizer
+go build -o storganizer.exe .
+```
+
+4. **Run from any location:**
+```cmd
+move storganizer.exe C:\Windows\System32\
+```
 
 ## Running
 
 ### Linux/macOS
 
 ```bash
-# Build from source
-go build -o storganizer .
-
-# Basic scan of the current directory
+# Scan current directory
 ./storganizer
 
-# Scan a specific media folder
+# Scan specific folder
 ./storganizer -path ~/Pictures
 
-# Generate a web-based audit report
+# Generate HTML report
 ./storganizer -path ~/Pictures -html
 
-# Output raw JSON for pipeline integration
-./storganizer -path ~/Pictures -json
+# Output JSON
+./storganizer -path ~/Pictures -json results.json
+
+# Strict matching (fewer false positives)
+./storganizer -path ~/Pictures -threshold 5
 ```
 
 ### Windows
 
-```powershell
-# Build from source
-go build -o storganizer.exe .
+Open **Command Prompt**:
 
-# Scan a disk path
-.\storganizer.exe -path D:\Photos -html
+```cmd
+storganizer.exe
 
-# Generate HTML report
-.\storganizer.exe -path D:\Photos -html
+storganizer.exe -path "C:\Users\YourName\Pictures"
 
-# Output JSON
-.\storganizer.exe -path D:\Photos -json results.json
+storganizer.exe -path "C:\Users\YourName\Pictures" -html
 ```
 
-## Features
+## Flags
 
-- `-path` - Directory to scan (default: `.`)
-- `-threshold` - Perceptual distance limit (default: `10`, lower is stricter)
-- `-json` - Output results as JSON
-- `-html` - Bake results into `index.html` report
-
-## Typical workflows
-
-### Local Media Audit
-1. Build the tool: `go build -o storganizer main.go`
-2. Run with HTML output: `./storganizer -path ./my-media -html`
-3. Open `index.html` to review visual matches side-by-side.
-
-### GitHub-Native Reporting
-1. Push your media files to a GitHub repository.
-2. The included GitHub Action builds the Go CLI and runs a scan.
-3. A self-contained report is automatically deployed to your **GitHub Pages**.
+| Flag | Description | Default |
+|------|-------------|---------|
+| `-path` | Directory to scan | Current directory |
+| `-threshold` | Perceptual distance (lower = stricter) | 10 |
+| `-json` | Output JSON file | No output |
+| `-html` | Output HTML report | No output |
 
 ## Tuning Thresholds
 
@@ -111,8 +118,43 @@ go build -o storganizer.exe .
 | **10-12** | Standard | Re-exports and edited copies |
 | **15-20** | Loose | Near-identical shots in a burst |
 
+## Typical Workflows
+
+### Local Media Audit
+1. Build the tool: `go build -o storganizer .`
+2. Run with HTML output: `./storganizer -path ./my-media -html`
+3. Open `index.html` to review visual matches side-by-side.
+
+### GitHub-Native Reporting
+1. Push your media files to a GitHub repository.
+2. The included GitHub Action builds the Go CLI and runs a scan.
+3. A self-contained report is automatically deployed to your **GitHub Pages**.
+
+## Troubleshooting
+
+- **No images found?** - Make sure path is correct and contains supported formats (JPEG, PNG, WEBP, GIF, BMP)
+- **Too many groups?** - Increase threshold: `-threshold 15`
+- **Not finding similar enough images?** - Lower threshold: `-threshold 5`
+- **Video not supported?** - Install ffmpeg: `sudo pacman -S ffmpeg` (Linux) or download from ffmpeg.org
+
 ## Notes
 
 - **Performance:** Scanning is concurrent; large folders are processed using all available CPU cores.
 - **Safety:** Storganizer is a **reporting tool**; it identifies matches but does not delete files automatically.
 - **Video:** Video matching uses heuristic sampling. For forensic-level video analysis, consider dedicated tools.
+
+## Project Structure
+
+```
+storganizer/
+├── main.go       # Native Go scanning engine and CLI logic
+├── index.html   # Unified static dashboard template
+├── Makefile     # Cross-platform build orchestration
+├── go.mod       # Go module definition
+├── README.md    # This file
+└── LICENSE      # MIT License
+```
+
+## License
+
+MIT

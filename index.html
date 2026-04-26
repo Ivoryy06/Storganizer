@@ -201,6 +201,10 @@
 
     .split { display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
 
+    .link-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 0.5rem; }
+    .link-pill { border: 0.5px solid var(--border); background: var(--code-bg); color: var(--text); padding: 6px 10px; border-radius: 999px; font-size: 0.78rem; text-decoration: none; }
+    .link-pill:hover { filter: brightness(0.97); }
+
     .help-btn { position: fixed; bottom: 1.5rem; right: 1.5rem; width: 48px; height: 48px; border-radius: 50%; background: var(--accent); color: white; border: none; font-size: 1.2rem; font-weight: 700; cursor: pointer; box-shadow: 0 4px 12px rgba(0, 102, 255, 0.3); transition: transform 0.2s; z-index: 100; }
     .help-btn:hover { transform: scale(1.1); }
     .tutorial-overlay { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.7); z-index: 200; align-items: center; justify-content: center; padding: 1rem; }
@@ -226,6 +230,10 @@
     <div>
       <h1>Storganizer</h1>
       <div class="sub">Media Duplicate Report</div>
+      <div class="link-row">
+        <a class="link-pill" href="https://github.com/Ivoryy06/storganizer" target="_blank">GitHub</a>
+        <a class="link-pill" href="./README.md" target="_blank">README</a>
+      </div>
     </div>
     <div id="gen-time"></div>
   </header>
@@ -407,33 +415,35 @@
       </div>
 
       <div class="tutorial-section">
-        <h3>Download & Run</h3>
+        <h3>Download & Install</h3>
         <div class="platform-tabs">
           <button class="platform-tab active" onclick="switchPlatform('linux')">Linux/macOS</button>
           <button class="platform-tab" onclick="switchPlatform('windows')">Windows</button>
         </div>
         <div class="platform-content active" id="linux-content">
-          <pre><code># Build from source
+          <pre><code># Install Go (if not already)
+pacman -S go
+
+# Clone and build
+git clone https://github.com/Ivoryy06/storganizer.git
+cd storganizer
 go build -o storganizer .
 
-# Scan current directory
-./storganizer
-
-# Scan specific folder
-./storganizer -path ~/Pictures
-
-# Generate HTML report
+# Run
 ./storganizer -path ~/Pictures -html</code></pre>
         </div>
         <div class="platform-content" id="windows-content">
-          <pre><code># Build from source
+          <pre><code># 1. Download Go from https://go.dev/dl/ and install
+
+# 2. Open Terminal (Win+X → Terminal)
+
+# 3. Clone and build:
+git clone https://github.com/Ivoryy06/storganizer.git
+cd storganizer
 go build -o storganizer.exe .
 
-# Scan disk path
-.\storganizer.exe -path D:\Photos
-
-# Generate HTML report
-.\storganizer.exe -path D:\Photos -html</code></pre>
+# 4. Run:
+storganizer.exe -path "C:\Users\YourName\Pictures" -html</code></pre>
         </div>
       </div>
 
@@ -443,6 +453,13 @@ go build -o storganizer.exe .
 -threshold   Perceptual distance (default: 10)
 -json        Output JSON file
 -html        Output HTML report</code></pre>
+      </div>
+
+      <div class="tutorial-section">
+        <h3>Tips</h3>
+        <p>- Use <code>-threshold 5</code> for strict matching (exact duplicates only)<br>
+- Use <code>-threshold 15</code> for loose matching (similar shots)<br>
+- Open the generated HTML file in your browser to review</p>
       </div>
     </div>
   </div>
