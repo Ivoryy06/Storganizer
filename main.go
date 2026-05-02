@@ -128,7 +128,7 @@ func main() {
 	results := make([]*MediaFile, len(files))
 	jobs := make(chan int, len(files))
 
-	// Worker pool
+	
 	numWorkers := runtime.NumCPU()
 	for w := 0; w < numWorkers; w++ {
 		go func() {
@@ -149,7 +149,7 @@ func main() {
 	close(jobs)
 	wg.Wait()
 
-	// Filter nil results
+	
 	var validResults []*MediaFile
 	for _, r := range results {
 		if r != nil {
